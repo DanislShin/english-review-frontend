@@ -1,34 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>영어 문장 해설 리뷰</title>
-</head>
-<body>
-  <h2>영어 문장</h2>
-  <p id="sentence">The weather was unexpectedly warm yesterday.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI 영어 문장 해석 평가</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f9f9f9;
+      }
+      textarea {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 1em;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1em;
+      }
+      #feedback {
+        margin-top: 20px;
+        white-space: pre-wrap;
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AI 영어 문장 해석 평가</h1>
 
-  <h3>당신의 해설 (영어 또는 한국어)</h3>
-  <textarea id="userInput" rows="6" cols="60" placeholder="여기에 해설을 입력하세요..."></textarea><br><br>
-  <button onclick="submitReview()">AI 리뷰 요청</button>
+    <label for="sentence">① 영어 지문</label>
+    <textarea
+      id="sentence"
+      placeholder="예: The weather was unexpectedly warm yesterday."
+    ></textarea>
 
-  <h3>AI 피드백</h3>
-  <pre id="result" style="white-space: pre-wrap;"></pre>
+    <label for="input">② 당신의 해설</label>
+    <textarea
+      id="input"
+      placeholder="예: 어제 날씨가 예상보다 따뜻했다는 의미입니다."
+    ></textarea>
 
-  <script>
-    async function submitReview() {
-      const input = document.getElementById("userInput").value;
-      const sentence = document.getElementById("sentence").textContent;
+    <button onclick="submitReview()">해석 평가 요청</button>
 
-      const response = await fetch("/review", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sentence, input })
-      });
+    <div id="feedback"></div>
 
-      const data = await response.json();
-      document.getElementById("result").textContent = data.feedback || "오류 발생";
-    }
-  </script>
-</body>
+    <script>
+      // ✅ 여기에 배포된 백엔드 주소 넣기 (Render 기준)
+      const apiUrl = "https://english-review-backend.onrender.com/review";
+
+      async function submitReview() {
+        const sentence = document.getElementById("sentence").value;
+        const input = document.getElementById("input").value;
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sentence, input }),
+        });
+
+        const data = await response.json();
+        document.getElementById("feedback").textContent = data.feedback;
+      }
+    </script>
+  </body>
 </html>
