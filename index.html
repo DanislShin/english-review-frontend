@@ -32,6 +32,13 @@
   <body>
     <h1>AI 영어 문장 해석 평가</h1>
 
+    <!-- 추가 입력 필드 -->
+    <label for="user_id">사용자 ID</label>
+    <textarea id="user_id" placeholder="예: student001"></textarea>
+
+    <label for="module_code">모듈 코드</label>
+    <textarea id="module_code" placeholder="예: 100-1"></textarea>
+
     <label for="sentence">① 영어 지문</label>
     <textarea
       id="sentence"
@@ -52,16 +59,19 @@
       // ✅ 여기에 배포된 백엔드 주소 넣기 (Render 기준)
       const apiUrl = "https://english-review-backend.onrender.com/review";
 
+      //const apiUrl = "http://localhost:3000/review";
+
+      // 수정된 JS 함수
       async function submitReview() {
         const sentence = document.getElementById("sentence").value;
         const input = document.getElementById("input").value;
+        const user_id = document.getElementById("user_id").value;
+        const module_code = document.getElementById("module_code").value;
 
         const response = await fetch(apiUrl, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sentence, input }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sentence, input, user_id, module_code }),
         });
 
         const data = await response.json();
